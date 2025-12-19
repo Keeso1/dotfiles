@@ -1,0 +1,7 @@
+[user]
+	email = isac.lindh01@gmail.com
+	name = Keeso1
+[core]
+	editor = code --wait
+[init]
+	defaultBranch = main

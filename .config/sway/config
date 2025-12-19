@@ -4,6 +4,7 @@
 #
 # Read `man 5 sway` for a complete reference.
 
+include "$HOME/.cache/wal/colors-sway"
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
@@ -64,11 +65,12 @@ mouse_warping container
 # shadows on
 # shadow_blur_radius 20
 
-client.focused          #d8cab8 #141216 #d8cab8 #d8cab8 #d8cab8
-client.focused_inactive #AC82E9 #141216 #d8cab8 #AC82E9 #AC82E9
-client.unfocused        #AC82E9 #141216 #d8cab8 #AC82E9 #AC82E9
-client.urgent           #fcb167 #141216 #d8cab8 #fcb167 #fcb167
-client.placeholder      #AC82E9 #141216 #d8cab8 #AC82E9 #AC82E9
+
+client.focused          $color5 $color0 $color5 $color5 $color5
+client.focused_inactive $color2 $color0 $color5 $color2 $color2
+client.unfocused        $color2 $color0 $color5 $color2 $color2
+client.urgent           $color1 $color0 $color5 $color1 $color1
+client.placeholder      $color2 $color0 $color5 $color2 $color2
 
 # Switches focus to urgent window
 focus_on_window_activation focus
@@ -79,6 +81,7 @@ focus_on_window_activation focus
 #
 # Example configuration:
 #
+exec_always wal -R >/dev/null 2>&1
 exec_always qs kill
 exec_always qs
 exec_always pkill dunst

@@ -84,3 +84,6 @@ fastfetch
 zinit light zsh-users/zsh-syntax-highlighting
 # End of lines added by compinstall
 alias config='/usr/bin/git --git-dir=/home/isac/dotfiles/ --work-tree=/home/isac'
+
+# Created by `pipx` on 2025-12-19 21:47:08
+export PATH="$PATH:/home/isac/.local/bin"

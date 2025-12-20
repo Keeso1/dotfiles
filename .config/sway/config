@@ -17,7 +17,7 @@ set $right l
 # Your preferred terminal emulator
 set $term kitty
 # Your preferred application launcher
-set $menu "pgrep wofi >/dev/null 2>&1 && killall wofi || wofi --show drun"
+set $menu "pgrep wofi >/dev/null 2>&1 && killall wofi || wofi --show drun -I"
 
 set $file_explorer dolphin
 
@@ -81,7 +81,7 @@ focus_on_window_activation focus
 #
 # Example configuration:
 #
-exec_always wal -R >/dev/null 2>&1
+exec sh -c '[ -f /tmp/wal_applied ] || (wal -R && touch /tmp/wal_applied)'
 exec_always qs kill
 exec_always qs
 exec_always pkill dunst

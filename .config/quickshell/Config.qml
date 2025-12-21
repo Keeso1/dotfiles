@@ -1,4 +1,5 @@
 pragma Singleton
+pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -6,122 +7,99 @@ import Quickshell.Io
 Singleton {
     id: root
 
-    //*=======================================================================*/
-    // READ THIS NOTE:
-    // Simply add to this list in order to create your
-    // own color schemes, they will automatically show up in the theme picker.
-    property var colors: themes[themes[settings.currentTheme] == null ? 'default' : settings.currentTheme]
+    property string currentTheme: "default"
+
+    // This binding automatically selects the current theme,
+    // or falls back to 'default' if the selected theme doesn't exist.
+    property var colors: themes[currentTheme] || themes['default'] // qmllint disable-next-line missing-property
+
     property var themes: {
         "default": {
-            "base": "#d8d8d8",
-            "shadow": "#9b9b9b",
-            "highlight": "#efefef",
-            "urgent": "#ff723e",
-            "accent": "#207874",
-            "text": "#000000",
-            "outline": "#000000",
-            "outlineGradientFade": "#161616",
-            "defaultWallpaperPath": ""
-        },
-        "yorha": {
-            "base": "#d9caba",
-            "shadow": "#baafa1",
-            "highlight": "#f0e2d3",
-            "urgent": "#ff854c",
-            "accent": "#626335",
-            "text": "#3e3d38",
-            "outline": "#3d3d39",
-            "outlineGradientFade": "#5b5b45",
-            "defaultWallpaperPath": ""
-        },
-        "cherry": {
-            "base": "#f4c9ef",
-            "shadow": "#c7a4cc",
-            "highlight": "#f9d0f7",
-            "urgent": "#ff936c",
-            "accent": "#c950bb",
-            "text": "#321d32",
-            "outline": "#20091d",
-            "outlineGradientFade": "#3e233e",
-            "defaultWallpaperPath": ""
-        },
-        "indigo": {
-            "base": "#bac4e6",
-            "shadow": "#7e8bad",
-            "highlight": "#d0def9",
-            "urgent": "#e83939",
-            "accent": "#3e7c99",
-            "text": "#0d0d19",
-            "outline": "#1a2135",
-            "outlineGradientFade": "#223143",
-            "defaultWallpaperPath": ""
-        },
-        "gleep": {
-            "base": "#bae6c5",
-            "shadow": "#93c48c",
-            "highlight": "#ccf9e7",
-            "urgent": "#ff7559",
-            "accent": "#3e9949",
-            "text": "#0d1913",
-            "outline": "#21351a",
-            "outlineGradientFade": "#284223",
-            "defaultWallpaperPath": ""
+            "base": "#1E1E2E",
+            "shadow": "#181825",
+            "highlight": "#BAC2DE",
+            "urgent": "#F38BA8",
+            "accent": "#89B4FA",
+            "text": "#CDD6F4",
+            "outline": "#181825",
+            "outlineGradientFade": "#11111B",
+            "defaultWallpaperPath": "",
+            "color0": "#45475A",
+            "color1": "#F38BA8",
+            "color2": "#A6E3A1",
+            "color3": "#F9E2AF",
+            "color4": "#89B4FA",
+            "color5": "#F5C2E7",
+            "color6": "#94E2D5",
+            "color7": "#BAC2DE",
+            "color8": "#585B70",
+            "color9": "#F38BA8",
+            "color10": "#A6E3A1",
+            "color11": "#F9E2AF",
+            "color12": "#89B4FA",
+            "color13": "#F5C2E7",
+            "color14": "#94E2D5",
+            "color15": "#A6ADC8",
+            "opacity": 100.0
         }
+        // "pywal" theme will be added here dynamically
     }
 
-    enum SystemPopup {
-        Startmenu,
-        ThemePicker,
-        AppLauncher,
-        None
-    }
-
-    property bool openSettingsWindow: false
-
-    property alias settings: settingsJsonAdapter.settings
+    // --- Pywal Theme Loader ---
     FileView {
-        path: Qt.resolvedUrl("./settings.json")
-        // when changes are made on disk, reload the file's content
+        id: pywalJsonFile
+        path: "file:///home/isac/.cache/wal/colors.json"
+        blockLoading: true
         watchChanges: true
-        onFileChanged: reload()
-        // when changes are made to properties in the adapter, save them
-        onAdapterUpdated: writeAdapter()
+        onFileChanged: this.reload()
+    }
+    readonly property var jsonData: JSON.parse(pywalJsonFile.text())
+    Component.onCompleted: {
+        // console.log(JSON.stringify(jsonData))
+        if (jsonData && typeof jsonData === 'object') {
+            // Create a new theme based on the default theme to inherit hardcoded values
+            var walTheme = {};
+            var defaultTheme = themes['default'];
 
-        onLoadFailed: error => {
-            if (error == FileViewError.FileNotFound) {
-                writeAdapter();
+            for (var key in defaultTheme) {
+                walTheme[key] = defaultTheme[key];
             }
-        }
 
-        JsonAdapter {
-            id: settingsJsonAdapter
-            property JsonObject settings: JsonObject {
-                property string version: "0.1"
-                property bool militaryTimeClockFormat: true
-                property string systemProfileImageSource: "/home/isac/Pictures/system_profile_picture.png"
-                property string currentTheme: "default"
-                property bool setWallpaperToThemeWallpaper: true
-                property JsonObject execCommands: JsonObject {
-                    property string terminal: "kitty"
-                    property string files: "nemo"
-                }
-                property JsonObject systemDetails: JsonObject {
-                    property string osName: "Linux Distro"
-                    property string osVersion: "Distro Version"
-                    property string ram: "Ram"
-                    property string cpu: "CPU Name"
-                    property string gpu: "GPU Name"
-                }
-                property JsonObject bar: JsonObject {
-                    property int fontSize: 12
-                    property int trayIconSize: 16
-                    property bool monochromeTrayIcons: true
-                }
+            // Override with values from jsonData
+            if (jsonData.special) {
+                if (jsonData.special.background)
+                  walTheme.base = jsonData.special.background;
+                if (jsonData.special.foreground)
+                  walTheme.text = jsonData.special.foreground;
+                if (jsonData.special.cursor)
+                  walTheme.highlight = jsonData.special.cursor;
+            }
+            if (jsonData.wallpaper) {
+                walTheme.defaultWallpaperPath = jsonData.wallpaper;
+            }
 
-                onCurrentThemeChanged: {
-                    console.info("Updated theme to: " + currentTheme);
+            // Override the color palette
+            if (jsonData.colors) {
+                for (var i = 0; i <= 15; i++) {
+                    var colorKey = "color" + i;
+                    if (jsonData.colors[colorKey]) {
+                        walTheme[colorKey] = jsonData.colors[colorKey];
+                    }
                 }
             }
+
+            // Explicitly keep user-requested hardcoded colors
+            walTheme.shadow = defaultTheme.shadow;
+            walTheme.urgent = defaultTheme.urgent;
+            walTheme.accent = walTheme[0];
+            walTheme.outline = defaultTheme.outline;
+            walTheme.outlineGradientFade = defaultTheme.outlineGradientFade;
+            walTheme.opacity = 50.0
+            // Add the new 'wal' theme to the themes object
+            themes.wal = walTheme;
+
+            // Set the current theme to "wal" to apply it
+            currentTheme = "wal";
         }
     }
 }

@@ -10,17 +10,6 @@ import Qt5Compat.GraphicalEffects
 ShellRoot {
     id: root
 
-    // Theme colors
-    property color colBg: "#1a1b26"
-    property color colFg: "#a9b1d6"
-    property color colMuted: "#444b6a"
-    property color colCyan: "#0db9d7"
-    property color colPurple: "#ad8ee6"
-    property color colRed: "#f7768e"
-    property color colYellow: "#e0af68"
-    property color colBlue: "#7aa2f7"
-    property color colGreen: "#207874"
-
     // Font
     property string fontFamily: "JetBrainsMono Nerd Font"
     property int fontSize: 14
@@ -45,7 +34,8 @@ ShellRoot {
         command: ["uname", "-r"]
         stdout: SplitParser {
             onRead: data => {
-                if (data) kernelVersion = data.trim()
+                if (data)
+                    kernelVersion = data.trim();
             }
         }
         Component.onCompleted: running = true
@@ -57,28 +47,29 @@ ShellRoot {
         command: ["sh", "-c", "head -1 /proc/stat"]
         stdout: SplitParser {
             onRead: data => {
-                if (!data) return
-                var parts = data.trim().split(/\s+/)
-                var user = parseInt(parts[1]) || 0
-                var nice = parseInt(parts[2]) || 0
-                var system = parseInt(parts[3]) || 0
-                var idle = parseInt(parts[4]) || 0
-                var iowait = parseInt(parts[5]) || 0
-                var irq = parseInt(parts[6]) || 0
-                var softirq = parseInt(parts[7]) || 0
+                if (!data)
+                    return;
+                var parts = data.trim().split(/\s+/);
+                var user = parseInt(parts[1]) || 0;
+                var nice = parseInt(parts[2]) || 0;
+                var system = parseInt(parts[3]) || 0;
+                var idle = parseInt(parts[4]) || 0;
+                var iowait = parseInt(parts[5]) || 0;
+                var irq = parseInt(parts[6]) || 0;
+                var softirq = parseInt(parts[7]) || 0;
 
-                var total = user + nice + system + idle + iowait + irq + softirq
-                var idleTime = idle + iowait
+                var total = user + nice + system + idle + iowait + irq + softirq;
+                var idleTime = idle + iowait;
 
                 if (lastCpuTotal > 0) {
-                    var totalDiff = total - lastCpuTotal
-                    var idleDiff = idleTime - lastCpuIdle
+                    var totalDiff = total - lastCpuTotal;
+                    var idleDiff = idleTime - lastCpuIdle;
                     if (totalDiff > 0) {
-                        cpuUsage = Math.round(100 * (totalDiff - idleDiff) / totalDiff)
+                        cpuUsage = Math.round(100 * (totalDiff - idleDiff) / totalDiff);
                     }
                 }
-                lastCpuTotal = total
-                lastCpuIdle = idleTime
+                lastCpuTotal = total;
+                lastCpuIdle = idleTime;
             }
         }
         Component.onCompleted: running = true
@@ -90,11 +81,12 @@ ShellRoot {
         command: ["sh", "-c", "free | grep Mem"]
         stdout: SplitParser {
             onRead: data => {
-                if (!data) return
-                var parts = data.trim().split(/\s+/)
-                var total = parseInt(parts[1]) || 1
-                var used = parseInt(parts[2]) || 0
-                memUsage = Math.round(100 * used / total)
+                if (!data)
+                    return;
+                var parts = data.trim().split(/\s+/);
+                var total = parseInt(parts[1]) || 1;
+                var used = parseInt(parts[2]) || 0;
+                memUsage = Math.round(100 * used / total);
             }
         }
         Component.onCompleted: running = true
@@ -106,10 +98,11 @@ ShellRoot {
         command: ["sh", "-c", "df / | tail -1"]
         stdout: SplitParser {
             onRead: data => {
-                if (!data) return
-                var parts = data.trim().split(/\s+/)
-                var percentStr = parts[4] || "0%"
-                diskUsage = parseInt(percentStr.replace('%', '')) || 0
+                if (!data)
+                    return;
+                var parts = data.trim().split(/\s+/);
+                var percentStr = parts[4] || "0%";
+                diskUsage = parseInt(percentStr.replace('%', '')) || 0;
             }
         }
         Component.onCompleted: running = true
@@ -121,12 +114,13 @@ ShellRoot {
         command: ["wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@"]
         stdout: SplitParser {
             onRead: data => {
-                if (!data) return
-                var parts = data.split(' ')
+                if (!data)
+                    return;
+                var parts = data.split(' ');
                 if (parts.length < 3) {
-                    volumeLevel = Math.round(parseFloat(parts[1]) * 100)
+                    volumeLevel = Math.round(parseFloat(parts[1]) * 100);
                 } else if (parts.length >= 3) {
-                    volumeLevel = -1
+                    volumeLevel = -1;
                 }
             }
         }
@@ -140,7 +134,7 @@ ShellRoot {
         stdout: SplitParser {
             onRead: data => {
                 if (data && data.trim()) {
-                    activeWindow = data.trim()
+                    activeWindow = data.trim();
                 }
             }
         }
@@ -153,7 +147,8 @@ ShellRoot {
         command: ["sh", "-c", "cat /sys/class/power_supply/BAT1/capacity"]
         stdout: SplitParser {
             onRead: data => {
-                if (data) batteryLevel = parseInt(data.trim())
+                if (data)
+                    batteryLevel = parseInt(data.trim());
             }
         }
         Component.onCompleted: running = true
@@ -165,7 +160,8 @@ ShellRoot {
         command: ["sh", "-c", "dunstctl count history"]
         stdout: SplitParser {
             onRead: data => {
-                if (data) notificationHistory = parseInt(data.trim())
+                if (data)
+                    notificationHistory = parseInt(data.trim());
             }
         }
         Component.onCompleted: running = true
@@ -177,11 +173,11 @@ ShellRoot {
         running: true
         repeat: true
         onTriggered: {
-            cpuProc.running = true
-            memProc.running = true
-            diskProc.running = true
-            batteryProc.running = true
-            notificationsProc.running = true
+            cpuProc.running = true;
+            memProc.running = true;
+            diskProc.running = true;
+            batteryProc.running = true;
+            notificationsProc.running = true;
         }
     }
 
@@ -191,11 +187,10 @@ ShellRoot {
         running: true
         repeat: true
         onTriggered: {
-            windowProc.running = true
-            volProc.running = true
+            windowProc.running = true;
+            volProc.running = true;
         }
     }
-
 
     Variants {
         model: Quickshell.screens
@@ -206,7 +201,7 @@ ShellRoot {
             property var currentWorkspaces: {
                 var workspaces = I3.workspaces.values;
                 var filtered = workspaces.filter(w => w.monitor.name == modelData.name);
-                 return filtered.sort((a,b) => a.number - b.number);
+                return filtered.sort((a, b) => a.number - b.number);
             }
 
             anchors {
@@ -216,7 +211,7 @@ ShellRoot {
             }
 
             implicitHeight: 30
-            color: root.colBg
+            color: Config.colors.base
 
             margins {
                 top: 0
@@ -227,13 +222,16 @@ ShellRoot {
 
             Rectangle {
                 anchors.fill: parent
-                color: root.colBg
+                color: Config.colors.base
+                opacity: Config.colors.opacity
 
                 RowLayout {
                     anchors.fill: parent
                     spacing: 0
 
-                    Item { width: 8 }
+                    Item {
+                        width: 8
+                    }
 
                     Rectangle {
                         Layout.preferredWidth: 24
@@ -247,7 +245,9 @@ ShellRoot {
                         }
                     }
 
-                    Item { width: 8 }
+                    Item {
+                        width: 8
+                    }
 
                     Repeater {
                         model: currentWorkspaces
@@ -265,9 +265,11 @@ ShellRoot {
                             GlowingText {
                                 text: wsId
                                 sourceColor: {
-                                    if (isUrgent) return root.colRed;
-                                    if (isActive) return root.colCyan;
-                                    return root.colMuted;
+                                    if (isUrgent)
+                                        return Config.colors.urgent;
+                                    if (isActive)
+                                        return Config.colors.highlight;
+                                    return Config.colors.text;
                                 }
                                 glowColor: sourceColor
                                 centerColor: "white"
@@ -278,12 +280,10 @@ ShellRoot {
                                 anchors.centerIn: parent
                             }
 
-
-
                             Rectangle {
                                 width: 20
                                 height: 3
-                                color: isActive ? root.colPurple : root.colBg
+                                color: isActive ? Config.colors.color6 : Config.colors.base
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 anchors.bottom: parent.bottom
                             }
@@ -303,12 +303,12 @@ ShellRoot {
                         Layout.alignment: Qt.AlignVCenter
                         Layout.leftMargin: 8
                         Layout.rightMargin: 8
-                        color: root.colMuted
+                        color: Config.colors.color0
                     }
 
                     GlowingText {
                         text: "🕭 " + notificationHistory
-                        sourceColor: root.colFg
+                        sourceColor: Config.colors.text
                         glowColor: sourceColor
                         centerColor: "white"
                         pixelSize: root.fontSize
@@ -325,12 +325,12 @@ ShellRoot {
                         Layout.alignment: Qt.AlignVCenter
                         Layout.leftMargin: 2
                         Layout.rightMargin: 8
-                        color: root.colMuted
+                        color: Config.colors.color0
                     }
 
                     GlowingText {
                         text: activeWindow
-                        sourceColor: root.colPurple
+                        sourceColor: Config.colors.color5
                         glowColor: sourceColor
                         centerColor: "white"
                         pixelSize: root.fontSize
@@ -345,7 +345,7 @@ ShellRoot {
 
                     GlowingText {
                         text: kernelVersion
-                        sourceColor: root.colRed
+                        sourceColor: Config.colors.color1
                         glowColor: sourceColor
                         centerColor: "white"
                         pixelSize: root.fontSize
@@ -361,12 +361,12 @@ ShellRoot {
                         Layout.alignment: Qt.AlignVCenter
                         Layout.leftMargin: 0
                         Layout.rightMargin: 8
-                        color: root.colMuted
+                        color: Config.colors.color0
                     }
 
                     GlowingText {
                         text: "CPU: " + cpuUsage + "%"
-                        sourceColor: root.colYellow
+                        sourceColor: Config.colors.color3
                         glowColor: sourceColor
                         centerColor: "white"
                         pixelSize: root.fontSize
@@ -382,12 +382,12 @@ ShellRoot {
                         Layout.alignment: Qt.AlignVCenter
                         Layout.leftMargin: 0
                         Layout.rightMargin: 8
-                        color: root.colMuted
+                        color: Config.colors.color0
                     }
 
                     GlowingText {
                         text: "Mem: " + memUsage + "%"
-                        sourceColor: root.colCyan
+                        sourceColor: Config.colors.color6
                         glowColor: sourceColor
                         centerColor: "white"
                         pixelSize: root.fontSize
@@ -403,12 +403,12 @@ ShellRoot {
                         Layout.alignment: Qt.AlignVCenter
                         Layout.leftMargin: 0
                         Layout.rightMargin: 8
-                        color: root.colMuted
+                        color: Config.colors.color0
                     }
 
                     GlowingText {
                         text: "Disk: " + diskUsage + "%"
-                        sourceColor: root.colBlue
+                        sourceColor: Config.colors.color4
                         glowColor: sourceColor
                         centerColor: "white"
                         pixelSize: root.fontSize
@@ -418,26 +418,24 @@ ShellRoot {
                         Layout.rightMargin: 8
                     }
 
-
-
                     Rectangle {
                         Layout.preferredWidth: 1
                         Layout.preferredHeight: 16
                         Layout.alignment: Qt.AlignVCenter
                         Layout.leftMargin: 0
                         Layout.rightMargin: 8
-                        color: root.colMuted
+                        color: Config.colors.color0
                     }
 
                     GlowingText {
                         text: {
                             if (volumeLevel === -1) {
-                                return "Vol: " + "MUTE"
+                                return "Vol: " + "MUTE";
                             } else {
-                                return "Vol: " + volumeLevel + "%"
+                                return "Vol: " + volumeLevel + "%";
                             }
                         }
-                        sourceColor: root.colPurple
+                        sourceColor: Config.colors.color5
                         glowColor: sourceColor
                         centerColor: "white"
                         pixelSize: root.fontSize
@@ -453,12 +451,12 @@ ShellRoot {
                         Layout.alignment: Qt.AlignVCenter
                         Layout.leftMargin: 0
                         Layout.rightMargin: 8
-                        color: root.colMuted
+                        color: Config.colors.color0
                     }
 
                     GlowingText {
                         text: "Bat: " + batteryLevel + "%"
-                        sourceColor: root.colGreen
+                        sourceColor: Config.colors.color2
                         glowColor: sourceColor
                         centerColor: "white"
                         pixelSize: root.fontSize
@@ -474,7 +472,7 @@ ShellRoot {
                         Layout.alignment: Qt.AlignVCenter
                         Layout.leftMargin: 0
                         Layout.rightMargin: 8
-                        color: root.colMuted
+                        color: Config.colors.color0
                     }
                     SystemClock {
                         id: clock
@@ -482,7 +480,7 @@ ShellRoot {
                     }
                     GlowingText {
                         text: Qt.formatDateTime(clock.date, "ddd, MMM dd - HH:mm")
-                        sourceColor: root.colCyan
+                        sourceColor: Config.colors.color6
                         glowColor: "white"
                         centerColor: "white"
                         pixelSize: root.fontSize
@@ -493,10 +491,11 @@ ShellRoot {
                         Layout.rightMargin: 8
                     }
 
-                    Item { width: 8 }
+                    Item {
+                        width: 8
+                    }
                 }
             }
         }
     }
 }
-

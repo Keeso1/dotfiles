@@ -31,8 +31,7 @@ output eDP-1 resolution 1920x1080@60.00Hz position 0,0
 # output HDMI-A-2 enable
 
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-set $wallpaper_path /home/isac/Pictures/wallpapers/
-output * bg $wallpaper_path/cyberpunk.jpg fill
+output * bg $wallpaper fill
 
 
 gaps inner 4px
@@ -260,12 +259,12 @@ bindsym $mod+r mode "resize"
 # Utilities:
 #
     # Special keys to adjust volume via PulseAudio
-    bindsym --locked XF86AudioMute exec 
+    bindsym --locked XF86AudioMute exec wpctl set-mute \@DEFAULT_SINK@ toggle
 # dd
 
     bindsym --locked XF86AudioLowerVolume exec wpctl set-volume \@DEFAULT_SINK@ 5%-
     bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume -l 1 \@DEFAULT_SINK@ 5%+
-    bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+    bindsym --locked XF86AudioMicMute exec wpctl set-mute \@DEFAULT_SOURCE@ toggle
     # Special keys to adjust brightness via brightnessctl
     bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
     bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+

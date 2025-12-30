@@ -1,0 +1,5 @@
+
+font-family = "Mononoki Nerd Font Mono"
+font-size=18
+shell-integration-features= cursor,sudo,title,ssh-env,ssh-terminfo
+background-opacity=0.9

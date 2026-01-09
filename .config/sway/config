@@ -15,7 +15,7 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term ghostty
+set $term kitty
 # Your preferred application launcher
 set $menu "pgrep wofi >/dev/null 2>&1 && killall wofi || wofi --show drun -I"
 

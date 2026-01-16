@@ -38,7 +38,12 @@ if ! ssh-add -l >/dev/null 2>&1; then
     ssh-add ~/.ssh/id_ed25519
 fi
 
+# LAZYGIT - Use multiple config files
+export LG_CONFIG_FILE="$HOME/.config/lazygit/lazycommit/config.yml,\
+$HOME/.config/lazygit/config.yml"
 
+#qml languageserver
+export QML_IMPORT_PATH="$HOME/Qt/6.10.1/gcc_64/qml/"
 # bun completions
 [ -s "/home/isac/.bun/_bun" ] && source "/home/isac/.bun/_bun"
 
@@ -89,3 +94,5 @@ alias config='/usr/bin/git --git-dir=/home/isac/dotfiles/ --work-tree=/home/isac
 
 # Created by `pipx` on 2025-12-19 21:47:08
 export PATH="$PATH:/home/isac/.local/bin"
+# added by zathurapywal
+export PATH="/home/isac/.local/bin:$PATH"

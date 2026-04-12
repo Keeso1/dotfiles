@@ -1,28 +1,57 @@
 return {
-  "mason-org/mason.nvim",
-  opts = {
-    registries = {
-      "github:mason-org/mason-registry",
-      "github:Crashdummyy/mason-registry",
+    "mason-org/mason.nvim",
+    lazy = false,
+    dependencies = {
+        "mason-org/mason-lspconfig.nvim",
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
+        "hrsh7th/cmp-nvim-lsp",
+        "neovim/nvim-lspconfig",
     },
-    ensure_installed = {
-      "lua-language-server",
-      "xmlformatter",
-      "csharpier",
-      "prettier",
-      "stylua",
-      "bicep-lsp",
-      "html-lsp",
-      "css-lsp",
-      "eslint-lsp",
-      "typescript-language-server",
-      "json-lsp",
-      "rust-analyzer",
+    config = function()
+        -- import mason and mason_lspconfig
+        local mason = require("mason")
+        local mason_lspconfig = require("mason-lspconfig")
+        local mason_tool_installer = require("mason-tool-installer")
 
-      -- !
-      "roslyn",
-      -- "csharp-language-server",
-      -- "omnisharp",
-    },
-  },
+        -- enable mason and configure icons
+        mason.setup({
+            ui = {
+                icons = {
+                    package_installed = "✓",
+                    package_pending = "➜",
+                    package_uninstalled = "✗",
+                },
+            },
+        })
+
+        mason_lspconfig.setup({
+            automatic_enable = false,
+            -- servers for mason to install
+            ensure_installed = {
+                "lua_ls",
+                "ts_ls",
+                "html",
+                "cssls",
+                "tailwindcss",
+                "gopls",
+                "angularls",
+                "astro",
+                "emmet_ls",
+                "emmet_language_server",
+                "marksman",
+            },
+        })
+
+        mason_tool_installer.setup({
+            ensure_installed = {
+                "biome",
+                "prettier",
+                "stylua",
+                "isort",
+                "pylint",
+                "clangd",
+                "denols",
+            },
+        })
+    end,
 }

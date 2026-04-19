@@ -7,7 +7,6 @@ fi
 
 #pywal coloscheme setup
 (cat ~/.cache/wal/sequences &)
-
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=4000
@@ -94,6 +93,8 @@ zinit light zsh-users/zsh-syntax-highlighting
   export EDITOR=nvim
 # Created by `pipx` on 2025-12-19 21:47:08
 export PATH="$PATH:/home/isac/.local/bin"
+# Add Doom emacs to path
+export PATH="$HOME/.emacs.d/bin:$PATH"
 # added by zathurapywal
 export PATH="/home/isac/.local/bin:$PATH"
 alias dotfiles='/usr/bin/git --git-dir=/home/isac/.dotfiles/ --work-tree=/home/isac'

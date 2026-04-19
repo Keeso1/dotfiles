@@ -335,7 +335,7 @@ return {
                 },
             })
 
-            vim.cmd.colorscheme("gruvbox")
+            vim.cmd.colorscheme("zaibatsu")
         end,
     },
 }

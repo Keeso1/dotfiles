@@ -40,8 +40,12 @@ return {
 
 		-- Keymaps
 		vim.keymap.set("n", "<leader>pr", "<cmd>Telescope oldfiles<CR>", { desc = "Fuzzy find recent files" })
+		vim.keymap.set("n", "<leader>pgC", "<cmd>Telescope git_commits<CR>", { desc = "Fuzzy find commits" })
+		vim.keymap.set("n", "<leader>pgc", "<cmd>Telescope git_bcommits<CR>", { desc = "Fuzzy find commits in current buffer" })
+		vim.keymap.set("n", "<leader>pgs", "<cmd>Telescope git_status<CR>", { desc = "Fuzzy find changed files" })
 		vim.keymap.set("n", "<leader><leader>", function() builtin.find_files() end, {desc = "Find files in dir"})
 		vim.keymap.set("n", "<leader>/", function() builtin.live_grep() end, {desc = "Find word in dir"})
+		vim.keymap.set("n", "<leader>bg", "<cmd>Telescope buffers<CR>", {desc = "Fuzzy find open buffers"})
 		vim.keymap.set("n", "<leader>pWs", function()
 			local word = vim.fn.expand("<cWORD>")
 			builtin.grep_string({ search = word })

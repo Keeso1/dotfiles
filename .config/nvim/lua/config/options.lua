@@ -17,6 +17,7 @@ vim.opt.shiftwidth = 4
 vim.opt.cursorline = true      -- highlight the current line
 vim.opt.signcolumn = "yes"     -- always show sign column (prevents layout shift from LSP)
 vim.opt.termguicolors = true   -- true color support
+vim.g.editorconfig = true      -- Use .editorconfig
 
 -- Misc
 vim.opt.undofile = true        -- persistent undo across sessions

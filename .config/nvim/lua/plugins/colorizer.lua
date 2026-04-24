@@ -1,6 +1,6 @@
 return {
     {
-        "NvChad/nvim-colorizer.lua",
+        "norcalli/nvim-colorizer.lua",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
         opts = {},
         config = function()

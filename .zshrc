@@ -93,6 +93,8 @@ zinit light zsh-users/zsh-syntax-highlighting
   export EDITOR=nvim
 # Created by `pipx` on 2025-12-19 21:47:08
 export PATH="$PATH:/home/isac/.local/bin"
+# Add dotnet tools to path
+export PATH="$PATH:/home/isac/.dotnet/tools"
 # Add Doom emacs to path
 export PATH="$HOME/.emacs.d/bin:$PATH"
 # added by zathurapywal

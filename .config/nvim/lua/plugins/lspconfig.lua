@@ -292,6 +292,14 @@ return {
             },
         })
 
+		vim.lsp.config("roslyn", {
+			settings = {
+				["csharp|background_analysis"] = {
+					dotnet_analyzer_diagnostics_scope = "openFiles",
+					dotnet_compiler_diagnostics_scope = "openFiles",
+				}
+			}
+		})
         -- Instead of using mason enable all configured LSP via `automatic_enable=true`
         -- Prefer more control by enable manual server call below via vim.lsp.enable("")
         -- mason config: lua/sethy/plugins/lsp/mason.lua:22
